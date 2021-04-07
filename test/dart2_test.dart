@@ -22,12 +22,12 @@ void main() {
       unit.expect(1024, ret);
     });
 
-//  {
-//      type.Uint8List out = hetima.Bencode.encode(-10.24);
-//      unit.expect('i-10.24e', convert.utf8.decode(out.toList()));
-//      num ret = hetima.Bencode.decode(out);
-//      unit.expect(-10.24, ret);
-//  }
+    unit.test('bencode: number minus and double', () {
+      type.Uint8List out = Bencode.encode(-10.24);
+      unit.expect('i-10.24e', convert.utf8.decode(out.toList()));
+      num ret = Bencode.decode(out);
+      unit.expect(-10.24, ret);
+    });
 
     unit.test('bencode: list', () {
       List l = [];

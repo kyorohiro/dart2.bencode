@@ -159,17 +159,34 @@ class Bdecoder {
     if (buffer[index++] != 0x69) {
       throw errorTmp.update('bennumber', buffer, index);
     }
-    var returnValue = 0;
+    num returnValue = 0;
+    var plusMinus = 1;
+    var dot = 0;
     while (index < buffer.length && buffer[index] != 0x65) {
-      if (!(0x30 <= buffer[index] && buffer[index] <= 0x39)) {
+      if (dot != 0) {
+        dot *= 10;
+      }
+      if (index == 1 && buffer[index] == 0x2d) {
+        plusMinus = -1;
+      } else if (dot == 0 && buffer[index] == 0x2e) {
+        dot = 1;
+      } else if (0x30 <= buffer[index] && buffer[index] <= 0x39) {
+        returnValue = returnValue * 10 + (buffer[index] - 0x30);
+      } else {
         throw errorTmp.update('bennumber', buffer, index);
       }
-      returnValue = returnValue * 10 + (buffer[index++] - 0x30);
+
+      index++;
     }
+
     if (buffer[index++] != 0x65) {
       throw errorTmp.update('bennumber', buffer, index);
     }
-    return returnValue;
+    if (dot != 0) {
+      return plusMinus * returnValue / dot;
+    } else {
+      return (plusMinus * returnValue).toInt();
+    }
   }
 
   data.Uint8List decodeBytes(List<int> buffer) {
