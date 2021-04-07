@@ -36,7 +36,7 @@ class Bencode {
       if (!(oo is Map)) {
         return def;
       }
-      Map p = oo as Map;
+      var p = oo as Map<String, dynamic>;
       if (!p.containsKey(key)) {
         return def;
       }
@@ -54,7 +54,7 @@ class Bencode {
       if (!(oo is Map)) {
         return [];
       }
-      Map p = oo as Map;
+      var p = oo as Map<String, dynamic>;
       if (!p.containsKey(key)) {
         return [];
       }
@@ -72,7 +72,7 @@ class Bencode {
       if (!(oo is Map)) {
         return {};
       }
-      Map p = oo as Map;
+      var p = oo as Map<String, dynamic>;
       if (!p.containsKey(key)) {
         return {};
       }
@@ -113,7 +113,7 @@ class Bdecoder {
   }
 
   Map decodeDiction(List<int> buffer) {
-    Map ret = new Map();
+    var ret = {};
     if (buffer[index++] != 0x64) {
       throw errorTmp.update('bendiction', buffer, index);
     }
@@ -290,7 +290,7 @@ class Bencoder {
 class BencodeParseError implements Exception {
   String log = '';
 
-  BencodeParseError.empty() {}
+  BencodeParseError.empty();
 
   BencodeParseError(String s, data.Uint8List buffer, int index) {
     update(s, buffer, index);
@@ -301,6 +301,7 @@ class BencodeParseError implements Exception {
     return this;
   }
 
+  @override
   String toString() {
     return log;
   }
