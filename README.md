@@ -1,6 +1,13 @@
 
-bencode 
+dart bencode package
+* for dart v1  
+  https://github.com/kyorohiro/dart.bencode
 
+## support 
+
+```
+sdk: '>=2.12.0 <3.0.0'
+```
 
 ## LICENSE
 Apache License
@@ -51,9 +58,3 @@ import 'package:dart2/dart2.dart';
   unit.expect(1024, me['value']);
 }
 ```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
