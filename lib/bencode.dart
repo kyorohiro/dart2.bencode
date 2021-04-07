@@ -9,7 +9,7 @@ class Bencode {
     return _encoder.enode(obj);
   }
 
-  static Object decode(List<int> buffer) {
+  static dynamic decode(List<int> buffer) {
     return _decoder.decode(buffer);
   }
 
