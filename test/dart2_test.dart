@@ -2,6 +2,7 @@ import 'package:dart2.bencode/dart2.dart';
 import 'package:test/test.dart';
 
 void main() {
+  /*
   group('A group of tests', () {
     Awesome awesome;
 
@@ -13,4 +14,5 @@ void main() {
       expect(awesome.isAwesome, isTrue);
     });
   });
+  */
 }
