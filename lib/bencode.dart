@@ -5,7 +5,7 @@ class Bencode {
   static final Bencoder _encoder = Bencoder();
   static final Bdecoder _decoder = Bdecoder();
 
-  static data.Uint8List encode(Object obj) {
+  static data.Uint8List encode(dynamic obj) {
     return _encoder.enode(obj);
   }
 
@@ -13,7 +13,7 @@ class Bencode {
     return _decoder.decode(buffer);
   }
 
-  static String toText(Object oo, String key, String def) {
+  static String toText(dynamic oo, String key, String def) {
     try {
       if (!(oo is Map)) {
         return def;
@@ -31,7 +31,7 @@ class Bencode {
     }
   }
 
-  static num toNum(Object oo, String key, num def) {
+  static num toNum(dynamic oo, String key, num def) {
     try {
       if (!(oo is Map)) {
         return def;
@@ -49,7 +49,7 @@ class Bencode {
     }
   }
 
-  static List toList(Object oo, String key) {
+  static List<dynamic> toList(Object oo, String key) {
     try {
       if (!(oo is Map)) {
         return [];
@@ -67,7 +67,7 @@ class Bencode {
     }
   }
 
-  static Map toMap(Object oo, String key) {
+  static Map<String, dynamic> toMap(dynamic oo, String key) {
     try {
       if (!(oo is Map)) {
         return {};
@@ -87,7 +87,7 @@ class Bencode {
 }
 
 class Bdecoder {
-  BencodeParseError errorTmp = new BencodeParseError.empty();
+  var errorTmp = BencodeParseError.empty();
 
   int index = 0;
   Object decode(List<int> buffer) {
