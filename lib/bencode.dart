@@ -210,11 +210,15 @@ class ByteBufferBuilder {
   }
 
   void appendString(String v) {
-    _buffers.add(convert.utf8.encode(v));
+    var _buffer = convert.utf8.encode(v);
+    _length += _buffer.length;
+    _buffers.add(_buffer);
   }
 
   void addBytes(List<int> buffer, {int index: 0, int? length}) {
-    _buffers.add(buffer.sublist(index, index + (length ?? buffer.length)));
+    var _buffer = buffer.sublist(index, index + (length ?? buffer.length));
+    _length += _buffer.length;
+    _buffers.add(_buffer);
   }
 }
 
