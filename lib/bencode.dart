@@ -1,10 +1,9 @@
 import 'dart:typed_data' as data;
 import 'dart:convert' as convert;
-//import 'package:tiny_parser/parser.dart' show ParserByteBuffer;
 
 class Bencode {
-  static Bencoder _encoder = new Bencoder();
-  static Bdecoder _decoder = new Bdecoder();
+  static final Bencoder _encoder = Bencoder();
+  static final Bdecoder _decoder = Bdecoder();
 
   static data.Uint8List encode(Object obj) {
     return _encoder.enode(obj);
@@ -19,7 +18,7 @@ class Bencode {
       if (!(oo is Map)) {
         return def;
       }
-      Map p = oo as Map;
+      var p = oo as Map<String, dynamic>;
       if (!p.containsKey(key)) {
         return def;
       }
@@ -110,25 +109,25 @@ class Bdecoder {
       // d
       return decodeDiction(buffer);
     }
-    throw errorTmp.update("benobject", buffer, index);
+    throw errorTmp.update('benobject', buffer, index);
   }
 
   Map decodeDiction(List<int> buffer) {
     Map ret = new Map();
     if (buffer[index++] != 0x64) {
-      throw errorTmp.update("bendiction", buffer, index);
+      throw errorTmp.update('bendiction', buffer, index);
     }
 
     ret = decodeDictionElements(buffer);
 
     if (buffer[index++] != 0x65) {
-      throw errorTmp.update("bendiction", buffer, index);
+      throw errorTmp.update('bendiction', buffer, index);
     }
     return ret;
   }
 
   Map decodeDictionElements(List<int> buffer) {
-    Map ret = new Map();
+    var ret = {};
     while (index < buffer.length && buffer[index] != 0x65) {
       var keyAsList = decodeBenObject(buffer) as data.Uint8List;
       var key = convert.utf8.decode(keyAsList.toList());
@@ -139,17 +138,17 @@ class Bdecoder {
 
   List decodeList(List<int> buffer) {
     if (buffer[index++] != 0x6c) {
-      throw errorTmp.update("benlist", buffer, index);
+      throw errorTmp.update('benlist', buffer, index);
     }
-    List ret = decodeListElemets(buffer);
+    var ret = decodeListElemets(buffer);
     if (buffer[index++] != 0x65) {
-      throw errorTmp.update("benlist", buffer, index);
+      throw errorTmp.update('benlist', buffer, index);
     }
     return ret;
   }
 
   List decodeListElemets(List<int> buffer) {
-    List ret = [];
+    var ret = [];
     while (index < buffer.length && buffer[index] != 0x65) {
       ret.add(decodeBenObject(buffer));
     }
@@ -158,33 +157,33 @@ class Bdecoder {
 
   num decodeNumber(List<int> buffer) {
     if (buffer[index++] != 0x69) {
-      throw errorTmp.update("bennumber", buffer, index);
+      throw errorTmp.update('bennumber', buffer, index);
     }
-    int returnValue = 0;
+    var returnValue = 0;
     while (index < buffer.length && buffer[index] != 0x65) {
       if (!(0x30 <= buffer[index] && buffer[index] <= 0x39)) {
-        throw errorTmp.update("bennumber", buffer, index);
+        throw errorTmp.update('bennumber', buffer, index);
       }
       returnValue = returnValue * 10 + (buffer[index++] - 0x30);
     }
     if (buffer[index++] != 0x65) {
-      throw errorTmp.update("bennumber", buffer, index);
+      throw errorTmp.update('bennumber', buffer, index);
     }
     return returnValue;
   }
 
   data.Uint8List decodeBytes(List<int> buffer) {
-    int length = 0;
+    var length = 0;
     while (index < buffer.length && buffer[index] != 0x3a) {
       if (!(0x30 <= buffer[index] && buffer[index] <= 0x39)) {
-        throw errorTmp.update("benstring", buffer, index);
+        throw errorTmp.update('benstring', buffer, index);
       }
       length = length * 10 + (buffer[index++] - 0x30);
     }
     if (buffer[index++] != 0x3a) {
-      throw errorTmp.update("benstring", buffer, index);
+      throw errorTmp.update('benstring', buffer, index);
     }
-    data.Uint8List ret = new data.Uint8List.fromList(buffer.sublist(index, index + length));
+    var ret = data.Uint8List.fromList(buffer.sublist(index, index + length));
     index += length;
     return ret;
   }
@@ -193,7 +192,7 @@ class Bdecoder {
 class ByteBufferBuilder {
   int _length = 0;
   int get length => _length;
-  List<List<int>> _buffers = [];
+  final List<List<int>> _buffers = [];
 
   void clear() {
     _buffers.clear();
@@ -220,7 +219,7 @@ class ByteBufferBuilder {
 }
 
 class Bencoder {
-  ByteBufferBuilder builder = new ByteBufferBuilder();
+  ByteBufferBuilder builder = ByteBufferBuilder();
 
   data.Uint8List enode(Object obj) {
     builder.clear();
@@ -229,51 +228,51 @@ class Bencoder {
   }
 
   void encodeString(String obj) {
-    List<int> buffer = convert.utf8.encode(obj);
-    builder.appendString("" + buffer.length.toString() + ":" + obj);
+    var buffer = convert.utf8.encode(obj);
+    builder.appendString('' + buffer.length.toString() + ':' + obj);
   }
 
   void encodeUInt8List(data.Uint8List buffer) {
-    builder.appendString("" + buffer.lengthInBytes.toString() + ":");
+    builder.appendString('' + buffer.lengthInBytes.toString() + ':');
     builder.addBytes(buffer, index: 0, length: buffer.length);
   }
 
   void encodeNumber(num num) {
-    builder.appendString("i" + num.toString() + "e");
+    builder.appendString('i' + num.toString() + 'e');
   }
 
   void encodeDictionary(Map obj) {
-    Iterable<dynamic> keys = obj.keys;
-    builder.appendString("d");
+    var keys = obj.keys;
+    builder.appendString('d');
     for (var key in keys) {
       encodeString(key);
       encodeObject(obj[key]);
-      //   print("##-> ${key} : ${obj[key]}");//kiyo kiyo
+      //   print('##-> ${key} : ${obj[key]}');//kiyo kiyo
     }
-    builder.appendString("e");
+    builder.appendString('e');
   }
 
   void encodeList(List list) {
-    builder.appendString("l");
-    for (int i = 0; i < list.length; i++) {
+    builder.appendString('l');
+    for (var i = 0; i < list.length; i++) {
       encodeObject(list[i]);
     }
-    builder.appendString("e");
+    builder.appendString('e');
   }
 
-  void encodeObject(Object obj) {
+  void encodeObject(Object? obj) {
     if (obj is num) {
       encodeNumber(obj);
     } else if (identical(obj, true)) {
-      encodeString("true");
+      encodeString('true');
     } else if (identical(obj, false)) {
-      encodeString("false");
+      encodeString('false');
     } else if (obj == null) {
-      encodeString("null");
+      encodeString('null');
     } else if (obj is String) {
       encodeString(obj);
     } else if (obj is data.ByteBuffer) {
-      encodeUInt8List(new data.Uint8List.view(obj));
+      encodeUInt8List(data.Uint8List.view(obj));
     } else if (obj is data.Uint8List) {
       encodeUInt8List(obj);
     } else if (obj is List) {
@@ -285,7 +284,7 @@ class Bencoder {
 }
 
 class BencodeParseError implements Exception {
-  String log = "";
+  String log = '';
 
   BencodeParseError.empty() {}
 
@@ -294,7 +293,7 @@ class BencodeParseError implements Exception {
   }
 
   BencodeParseError update(String s, List<int> buffer, int index) {
-    log = s + "#" + buffer.toList().toString() + "index=" + index.toString() + ":" + super.toString();
+    log = s + '#' + buffer.toList().toString() + 'index=' + index.toString() + ':' + super.toString();
     return this;
   }
 
