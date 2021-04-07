@@ -29,11 +29,16 @@ void main() {
       unit.expect(-10.24, ret);
     });
 
+    unit.test('bencode: number minus and double (1)', () {
+      num ret = Bencode.decode(convert.utf8.encode("i.24e"));
+      unit.expect(0.24, ret);
+    });
+
     unit.test('bencode: list', () {
-      List l = [];
+      var l = [];
       l.add('test');
       l.add(1024);
-      type.Uint8List out = Bencode.encode(l);
+      var out = Bencode.encode(l);
       unit.expect('l4:testi1024ee', convert.utf8.decode(out.toList()));
 
       List list = Bencode.decode(out);
