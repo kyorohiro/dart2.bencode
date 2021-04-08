@@ -14,11 +14,13 @@ class ByteBufferBuilderBasic extends ByteBufferBuilder {
   int get length => _length;
   final List<List<int>> _buffers = [];
 
+  @override
   void clear() {
     _buffers.clear();
     _length = 0;
   }
 
+  @override
   Uint8List toUint8List() {
     var ret = Uint8List(_length);
     var index = 0;
@@ -29,12 +31,14 @@ class ByteBufferBuilderBasic extends ByteBufferBuilder {
     return ret;
   }
 
+  @override
   void appendString(String v) {
     var _buffer = utf8.encode(v);
     _length += _buffer.length;
     _buffers.add(_buffer);
   }
 
+  @override
   void addBytes(List<int> buffer, {int index: 0, int? length}) {
     var _buffer = buffer.sublist(index, index + (length ?? buffer.length));
     _length += _buffer.length;
