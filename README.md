@@ -23,6 +23,7 @@ dependencies:
   info.kyorohiro.dart2.bencode:
     git:
       url: https://github.com/kyorohiro/dart.tiny_parser.git
+      ref: v0.0.3
 ```
 
 ```dart
