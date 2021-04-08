@@ -5,6 +5,9 @@ dart bencode package
 
 ## support 
 
+- dart:io
+- dart:html
+
 ```
 sdk: '>=2.12.0 <3.0.0'
 ```
