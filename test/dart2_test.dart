@@ -1,6 +1,6 @@
 library bencode.test;
 
-import 'package:dart2.bencode/bencode.dart';
+import 'package:info.kyorohiro.dart2.bencode/bencode.dart';
 import 'package:test/test.dart' as unit;
 import 'dart:typed_data' as type;
 import 'dart:convert' as convert;

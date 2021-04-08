@@ -15,9 +15,15 @@ Apache License
 
 ## Usage
 
+```
+dependencies:
+  info.kyorohiro.dart2.bencode:
+    git:
+      url: https://github.com/kyorohiro/dart.tiny_parser.git
+```
 
 ```dart
-import 'package:dart2.bencode/bencode.dart';
+import 'package:info.kyorohiro.dart2.bencode/bencode.dart';
 import 'package:dart2/dart2.dart';
 
 {
